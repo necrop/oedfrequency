@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>OED frequency: {{ page_title }}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta name="description" content="">
+		<meta name="author" content="">
+
+		<link href="/static/common/bootstrap/css/bootstrap.css" rel="stylesheet">
+		<link href="/static/common/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+		<link href="/static/freq/css/base.css" rel="stylesheet">
+		{% block extralinks %}
+		{% endblock %}
+		<style type="text/css">
+			{% block custom_style %}
+			{% endblock %}
+		</style>
+
+		<!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+		<!--[if lt IE 9]>
+			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+		<div class="navbar navbar-inverse navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+						<span class="icon-bar"></span>
+					</button>
+					<a class="brand" href="{% url 'freq:homepage' %}">OED frequency</a>
+					<div class="nav-collapse collapse">
+						<ul class="nav">
+							<li><a href="{% url 'freq:searchform' %}">Advanced search</a></li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">History <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li class="nav-header">Entries</li>
+									{% if recent_entries %}
+										{% for e in recent_entries %}
+											<li><a href="{% url 'freq:entry' id=e.0 %}">{{ e.1|safe }}</a></li>
+										{% endfor %}
+									{% else %}
+										<li><a href="#">[empty]</a></li>
+									{% endif %}
+									<li class="divider"></li>
+									<li class="nav-header">Comparisons</li>
+									{% if recent_comp %}
+										{% for c in recent_comp %}
+											<li><a href="{% url 'freq:compare' idlist=c.0 %}">{{ c.1|safe }}</a></li>
+										{% endfor %}
+									{% else %}
+										<li><a href="#">[empty]</a></li>
+									{% endif %}
+								</ul>
+							</li>
+							<li class="dropdown">
+								<a href="#" class="dropdown-toggle" data-toggle="dropdown">More <b class="caret"></b></a>
+								<ul class="dropdown-menu">
+									<li><a href="{% url "freq:infopage" pagename="documents" %}">Documents</a></li>
+									<li><a href="{% url "freq:infopage" pagename="currency" %}">Currency</a></li>
+								</ul>
+							</li>
+							<li><a href="{% url "freq:infopage" pagename="help" %}">Help</a></li>
+						</ul>
+						<form class="navbar-form pull-right" action="{% url "freq:quicksearch" %}" method="post">
+							<a data-content="Enter query in downcased form, without diacritics or hyphens. You can give a simple lemma, e.g. ‘knight’, a prefix with wildcard, e.g. ‘kn*’, or a range, e.g. ‘kn_kozz’. Search for multiple terms using commas as separators, e.g. ‘bread, butter, cheese’." rel="popover-below" data-toggle="popover" href="#">
+								<i class="icon-question-sign icon-white"></i>
+							</a>&nbsp;
+							{% csrf_token %}
+							<input class="span2" type="text" name="lemma" value="{{ qsearchvalue }}"/>
+							<button type="submit" class="btn btn-primary" title="quick search">
+								<i class="icon-search icon-white"></i>
+							</button>
+						</form>
+					</div><!--/.nav-collapse -->
+				</div>
+			</div>
+		</div>
+
+		<div class="container">
+			<h1>{{ page_title|safe }}</h1>
+			<p>&nbsp;</p>
+
+			{% block body_content %}
+			{% endblock %}
+
+			<p>&nbsp;</p>
+			<hr/>
+			<footer>
+				<p>OED frequency</p>
+			</footer>
+		</div> <!-- /container -->
+
+		<!-- hidden_elements: HTML for modals, etc., goes here -->
+		{% block hidden_elements %}
+		{% endblock %}
+		<!-- /hidden_elements -->
+
+
+		<script>
+			{% block javascript_constants %}
+			{% endblock %}
+		</script>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+		<script src="/static/common/bootstrap/js/bootstrap.min.js"></script>
+		{% block extrascript %}
+		{% endblock %}
+		<script>
+			$(document).ready( function() {
+				/* popovers */
+				$("a[rel='popover']").popover({trigger: 'hover', placement: 'right'});
+				$("a[rel='popover-below']").popover({trigger: 'hover', placement: 'bottom'});
+			});
+		</script>
+	</body>
+</html>

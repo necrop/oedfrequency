@@ -1,0 +1,39 @@
+{% extends "root/base.html" %}
+{% block pagetitle %}login{% endblock %}
+
+{% block extralinks %}
+	<style type="text/css">
+		.form-signin {
+			max-width: 300px;
+			background-color: lightseagreen;
+		}
+		.form-signin .form-signin-heading, .form-signin .checkbox {
+			margin-bottom: 10px;
+		}
+	</style>
+{% endblock %}
+
+{%  block page_content %}
+	<form class="form-signin well" method="post" action=".">
+		{% csrf_token %}
+		<h2 class="form-signin-heading">Please sign in</h2>
+		{% if form.errors %}
+			<h3>Your username and password did not match. Please try again.</h3>
+		{% endif %}
+		<p>{{ form.username }}</p>
+		<p>{{ form.password }}</p>
+		<button class="btn btn-large btn-primary" type="submit">Sign in</button>
+		<input type="hidden" name="next" value="{{ next }}" />
+	</form>
+{% endblock %}
+
+
+{% block additional_scripts %}
+	<script type="text/javascript" >
+		$(document).ready(function(){
+			$("#id_username").attr('placeholder', 'user name');
+			$("#id_password").attr('placeholder', 'password');
+		});
+	</script>
+{% endblock %}
+

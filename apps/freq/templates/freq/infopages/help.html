@@ -1,0 +1,124 @@
+{% extends "freq/base.html" %}
+
+{% block body_content %}
+	<div class="well">
+		<h3>Introduction</h3>
+		<p>
+			The OED Frequency site displays diachronic word-frequency data for OED entries and subentries, covering the period 1750-2010.
+			Frequency data is derived mainly from the <a href="http://storage.googleapis.com/books/ngrams/books/datasetsv2.html" target="ext">Google Ngrams</a> data set, revised and adjusted to handle homographs, different parts of speech, etc.
+			For more information on the way the data is derived, see the various background documents in the <a href="{% url "freq:infopage" pagename="documents" %}">Documents</a> page.
+		</p>
+		<p>
+			Frequency data is not stored for obsolete entries and subentries.
+		</p>
+	</div>
+
+	<div class="well">
+		<h3>Quick search</h3>
+		<p>
+			For Quick Search, use the input box on the right of the top navigation bar.
+			Quick Search returns a list of lemmas (entries and subentries) matching the query term(s).
+			Results are returned in alphabetical order, by lemma.
+		</p>
+		<p>
+			Searching is case-, accent-, space-, and hyphen-insensitive.
+			Several extended search methods are supported:
+			<ul>
+				<li>Use '*' as a wildcard, e.g. 'kn*' returns all lemmas beginning 'kn...';</li>
+				<li>Use the underscore ('_') to express a range, e.g. 'mo_muzz' returns all lemmas between 'mo' and 'muzz';</li>
+				<li>To search for several different lemmas, use commas as separators, e.g. 'bread, butter, cheese'. (This can be useful for comparing frequencies.)</li>
+			</ul>
+		</p>
+	</div>
+
+	<div class="well">
+		<h3>Advanced search</h3>
+		<p>
+			The <em>Lemma</em> field operates just like Quick Search input box, and supports the same extended search methods.
+			The <em>Lemma</em> field may be left blank, in which case it will be treated as 'a_zzz', i.e. all lemmas are returned.
+		</p>
+		<p>
+			The <em>Entry headword</em> field is usually left blank, but can be used to restrict results to lemmas found within a particular entry.
+			For example, to see which are the highest-frequency subentries in <em>mountain, n.</em>, leave the <em>Lemma</em> field blank, put 'mountain' in the <em>Entry headword</em> field, and select <em>Sort by: frequency (descending)</em>.
+		</p>
+		<p>
+			The <em>Entry type</em> field allows you to select main entries or subentries.
+		</p>
+		<p>
+			The <em>Wordclass</em> field allows you to select lemmas with a particular part of speech.
+			In the case of subentries, this is the part of speech of the lemma itself, not of its parent entry.
+		</p>
+		<p>
+			The <em>Frequency band</em> fields filter results to those within a given range of frequency bands, from 1 (very high-frequency lemmas) to 8 (very low-frequency lemmas).
+			Bands are logarithmic: lemmas in band 1 are about 10x as frequent as lemmas in band 2, etc.
+		</p>
+		<p>
+			The <em>Year</em> field adjusts how frequency is evaluated.
+			For example, if you use the <em>Frequency band</em> fields to specify that you want lemmas in bands 1 and 2 only, and use the <em>Sort by</em> field to sort results in frequency order, this will usually be evaluated with reference to lemma frequencies in the year 2000.
+			But you can adjust this so that lemmas are evaluated with reference to their frequencies in, say, 1780.
+		</p>
+		<p>
+			Lemmas which are obsolete or not yet coined at the date specified in the <em>Year</em> field, or lemmas which fall outside the frequency range specified, are usually omitted from the results list. But you can include them by ticking the relevant <em>Ghosts</em> checkbox.
+			'Ghost' lemmas appear greyed out in the results list.
+		</p>
+		<p>
+			By default, results are returned in alphabetical order, by lemma (same as Quick Search).
+			The <em>Sort by</em> selector allows you to choose a different order.
+			For example, to see the highest-frequency <em>evo...</em> lemmas, enter 'evo*' in the <em>Lemma</em> field, and select <em>Sort by: frequency (descending)</em>.
+		</p>
+	</div>
+
+	<div class="well">
+		<h3>Sort order</h3>
+		<p>
+			By default, results for both Quick Search and Advanced Search are returned in alphabetical order, by lemma.
+			At the top of the results list is a row of alternative sort orders, which you can click to change the way that the current results set is sorted.
+		</p>
+		<p>
+			Sort order can also be set in advance, by using the <em>Sort by</em> dropdown in the Advanced Search form.
+		</p>
+		<p>
+			If a particular date has been specified using the <em>Year</em> field in the Advanced Search form, frequency-based sort orders are computed with reference to each lemma's frequency at that time.
+			Otherwise, frequency-based sort orders are computed with reference to each lemma's average frequency in the modern period (roughly, 1970-2010).
+		</p>
+		<p>
+			When sorting by increase or decrease since 1800, lemmas which have null frequency at 1800 or now are omitted (since in such cases change in frequency cannot be meaningfully calculated as a ratio).
+			This means that lemmas which did not yet exist in 1800, or lemmas which have become obsolete since 1800, will be omitted.
+		</p>
+	</div>
+
+	<div class="well">
+		<h3>Lemma detail</h3>
+		<p>
+			Click the lemma in a results list to go to the lemma detail page.
+			This includes a chart showing frequency over time for all the individual forms and variant spellings making up the lemma (e.g. singular and plural in the case of a noun), and for the lemma as a whole.
+			If the lemma is a main entry, it will also include a chart showing the position of this entry in a list of OED entries ranked by frequency.
+		<p>
+		<p>
+			Mouse over data points in the charts for more information.
+		<p>
+		<p>
+			The frequency table at the bottom of the page gives the complete set of raw frequency data for the lemma.
+		</p>
+	</div>
+
+	<div class="well">
+		<h3>Frequency comparison</h3>
+		<p>
+			There are several different ways to generate charts comparing frequencies for different lemmas:
+			<ul>
+				<li>If a results list consist of 10 results or fewer, you can compare these directly by clicking 'Compare frequencies for these results' at the end of the list.</li>
+				<li>You can search for two or more lemmas with a comma-separated list in Quick Search, e.g. 'basketball,baseball', then click 'Compare frequencies for these results' at the end of the results list.</li>
+				<li>From the Lemma Detail page, you can compare the current lemma with any other recently-viewed lemma by clicking the relevant lemma listed in the 'Compare' section.</li>
+			</ul>
+		<p>
+		<p>
+			The Comparison page shows a chart in which each lemma being compared is shown as a separate data series.
+			Click on a data points for more information.
+		</p>
+		<p>
+			You can remove lemmas from the chart by clicking the 'remove' button in the list of lemmas currently being compared.
+			You can also add series for other recently-viewed lemmas.
+		</p>
+	</div>
+{% endblock %}

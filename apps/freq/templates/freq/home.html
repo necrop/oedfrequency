@@ -1,0 +1,37 @@
+﻿{% extends "freq/base.html" %}
+
+{% block body_content %}
+	<div class="row-fluid">
+		<div class="span4 well">
+			<h2>Quick search</h2>
+			<form action="{% url "freq:quicksearch" %}" method="post">
+				{% csrf_token %}
+				<input type="text" name="lemma" value="{{ qsearchvalue }}"/>
+				<button type="submit" class="btn btn-primary" title="quick search">
+					<i class="icon-search icon-white"></i>
+				</button>
+			</form>
+			<p>Accepts a simple lemma, e.g. ‘knight’, a prefix with wildcard, e.g. ‘kn*’, or a range, e.g. ‘kn_kozz’. (Use an underscore to indicate a range.)</p>
+			<p>Search for multiple terms using commas as separators, e.g. ‘bread, butter, cheese’.</p>
+		</div>
+		<div class="span4 well">
+			<h2>Advanced search</h2>
+			<p>Search with filters for wordclass, frequency, year, etc.</p>
+			<p><a class="btn btn-primary" href="{% url 'freq:searchform' %}">&nbsp;<i class="icon-chevron-right icon-white"></i>&nbsp;</a></p>
+		</div>
+		<div class="span4 well">
+			<h2>Documents</h2>
+			<p>Background proposals, project reports, etc.</p>
+			<p><a class="btn btn-primary" href="{% url 'freq:infopage' pagename='documents' %}">&nbsp;<i class="icon-chevron-right icon-white"></i>&nbsp;</a></p>
+		</div>
+	</div>
+	<div class="row-fluid">
+		<div class="span4 well">
+			<h2>Currency</h2>
+			<p>Currency spreadsheets, and related documents.</p>
+			<p><a class="btn btn-primary" href="{% url 'freq:infopage' pagename='currency' %}">&nbsp;<i class="icon-chevron-right icon-white"></i>&nbsp;</a></p>
+		</div>
+	</div>
+
+{% endblock %}
+

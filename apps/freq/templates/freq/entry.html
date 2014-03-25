@@ -1,0 +1,141 @@
+﻿{% extends "freq/base.html" %}
+{% load frequency_extras %}
+{% load humanize %}
+
+
+{% block extralinks %}
+	<link href="/static/freq/css/charts.css" rel="stylesheet">
+{% endblock %}
+
+
+{% block body_content %}
+
+		<div id="stats" class="well">
+			{% if not lemma.mainentry %}
+				<p>s.v. {{ lemma.entry.label_tagged|safe }}</p>
+			{% endif %}
+			<p>
+				{% if lemma.definition %}"{{ lemma.definition }}"{% else %}[undefined]{% endif %}
+				({{ lemma.date_range }})</p>
+			<p>{% include "freq/includes/linkset.html" with lemma=lemma %}</p>
+			{% if lemma.table %}
+				<ul>
+					<li>Maximum frequency: {{ lemma.table.max_frequency|significantDigits:"3" }} per million ({{ lemma.table.max_year }})</li>
+					<li>Minimum frequency: {{ lemma.table.min_frequency|significantDigits:"3" }} per million ({{ lemma.table.min_year }})</li>
+					<li>Mean average frequency: {{ lemma.table.mean_average|significantDigits:"3" }} per million {% ifequal lemma.min_frequency 0 %}[null values are ignored]{% endifequal %}</li>
+					<li>Rank order: {{ lemma.rank|ordinal }} most frequent OED entry.</li>
+					<li>Forms measured (most frequent first): <i>{{ lemma.types_string }}</i></li>
+				</ul>
+			{% else %}
+				<p>No frequency data compiled for this lemma. Frequency data is not compiled for obsolete lemma or for prefix/suffix entries.</p>
+			{% endif %}
+		</div>
+
+
+	{% if lemma.table %}
+		<div id="frequencyChart" class="well">
+			<h3>Frequency chart</h3>
+			<p>The y-axis shows frequency per million tokens. Values shown are smoothed using a moving-average algorithm. Click 'show raw values' to view the raw values instead.</p>
+			<p>Mouse over data points for more information.</p>
+			<div class="chartWrapper">
+				<div class="btn-group">
+					<a id="toggleValues" class="btn btn-small btn-primary" href="#">show raw values</a>
+				</div>
+
+				<div id="frequencyChartContainer"></div>
+				<div id="keyContainer"></div>
+				<div id="datapointDetails" class="popup">
+					<h3></h3>
+					<div></div>
+				</div>
+			</div>
+		</div>
+
+
+		{% if lemma.mainentry %}
+			<div id="rankChart" class="well">
+				<h3>OED entries ranked by frequency</h3>
+				<p>
+					The y-axis shows log-frequency, and the x-axis shows rank order of OED entries.
+					The red circle shows the position of '{{ lemma.label_tagged|safe }}' in rank order.
+				</p>
+				<p>
+					Obsolete entries are not included in the entry-rank data.
+				</p>
+				<p>Mouse over data points for more information.</p>
+				<div class="chartWrapper">
+					<div id="rankChartContainer"></div>
+					<div id="rankDetails" class="popup">
+						<h3></h3>
+						<div></div>
+					</div>
+				</div>
+			</div>
+		{% endif %}
+
+
+		{% if recent_entries|length > 1 %}
+			<div id="comparators" class="well">
+				<h3>Compare</h3>
+				<p>Compare '{{ lemma.label_tagged|safe }}' with:
+					<ul>
+						{% for e in recent_entries %}
+							{% if e.0 != lemma.id %}
+								<li><a href="{% url 'freq:compare' idlist=lemma.id %}+{{ e.0 }}">{{ e.1|safe }}</a></li>
+							{% endif %}
+						{% endfor %}
+					</ul>
+				</p>
+			</div>
+		{% endif %}
+
+
+		<div id="dataTable" class="well">
+			<h3>Frequency tables</h3>
+			<p>All values are raw frequencies, expressed as frequency per million corpus tokens.</p>
+
+			<table class="table table-bordered table-striped">
+				<thead>
+					<tr>
+						<th>Period</th>
+						{% for t in lemma.types_labels %}
+							<th>{{ t }}</th>
+						{% endfor %}
+						<th>TOTAL</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for row in lemma.grand_table %}
+						<tr>
+							<td>{{ row.0 }}</td>
+							{% for value in row.1 %}
+								<td>{{ value }}</td>
+							{% endfor %}
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+		</div>
+	{% endif %}
+
+{% endblock %}
+
+
+{% block javascript_constants %}
+	var lemma = "{{ lemma.lemma }}";
+	{% if lemma.table %}
+		var main_series = JSON.parse('{{ lemma.main_series|safe }}');
+		var types_series = JSON.parse('{{ lemma.types_series|safe }}');
+		var rankorder = {{ lemma.rank }};
+		var mod_frequency = {{ lemma.table.frequency }};
+	{% endif %}
+{% endblock %}
+
+
+{% block extrascript %}
+	<script type="text/javascript" src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="/static/freq/js/rankdata.js"></script>
+	<script type="text/javascript" src="/static/freq/js/chartism.js"></script>
+	<script type="text/javascript" src="/static/freq/js/entrycharts.js"></script>
+{% endblock %}

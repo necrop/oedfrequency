@@ -1,0 +1,132 @@
+
+/* Generic chart styles */
+.chartBackground {
+	stroke: black;
+	stroke-width: 2;
+	fill: white;
+}
+
+
+/* Styles for the pop-ups */
+
+.popup {
+	display: none;
+	position: absolute;
+	padding: 10px;
+	max-width: 400px;
+	font-family: Arial;
+	font-size: 15px;
+	color: #FFFFFF;
+	background: #333333;
+	border: 0px;
+	border-radius: 8px;
+	text-align: left;
+	opacity: 1;
+	z-index: 10;
+}
+
+.popup a:link {
+	color: #0099CC;
+}
+
+.popup h3 {
+	font-size: 1.5em;
+	margin: 0;
+	padding: 0;
+	padding-bottom: 0.3em;
+}
+
+
+
+/* Styles for the frequency chart */
+
+.frequencyAxis path {
+	fill: none;
+	stroke: black;
+	stroke-width: 1;
+	shape-rendering: crispEdges;
+}
+
+.frequencyPath {
+	stroke: gray;
+	stroke-width: 1;
+	fill: none;
+}
+
+.frequencyCircle {
+	stroke: #000000;
+	stroke-width: 1;
+}
+
+.frequencyCircle:hover {
+	stroke-width: 3;
+}
+
+#keyContainer span {
+	border-left: solid white 10px;
+	border-right: solid white 10px;
+	border-top: solid white 5px;
+	border-bottom: solid white 5px;
+	padding-left: 0.3em;
+	padding-right: 0.3em;
+}
+
+#keyContainer span.activeKey:hover {
+	background-color: yellow;
+	cursor: pointer;
+}
+
+
+/* Styles for the rank chart */
+
+.rankDot {
+	fill: gray;
+	stroke-width: 0;
+}
+
+.rankDot:hover {
+	stroke: #000000;
+	stroke-width: 5;
+}
+
+.rankDotHighlight {
+	fill: red;
+	stroke: #000000;
+	stroke-width: 2;
+}
+
+.rankDotHighlight:hover {
+	stroke-width: 5;
+	stroke: red;
+}
+
+
+
+
+/* Styles for the compare chart */
+
+.comparePoint {
+	fill: gray;
+	stroke: #000000;
+	stroke-width: 1;
+}
+
+.comparePoint:hover {
+	stroke-width: 3;
+}
+
+.ratioPath {
+	stroke: gray;
+	stroke-width: 1;
+	fill: none;
+}
+
+.ratioCircle {
+	fill: red;
+	stroke: #000000;
+	stroke-width: 1;
+}
+
+.ratioCircle:hover {
+	stroke-width: 3;
+}

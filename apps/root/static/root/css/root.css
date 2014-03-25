@@ -1,0 +1,27 @@
+body {
+	background-color: white ;
+	color: black;
+}
+
+img.bg {
+	height: auto;
+	width: 100%;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: -2;
+}
+
+#contentContainer {
+	margin: 1em;
+	font-family: 'Verdana';
+	padding-left: 1em;
+}
+
+h1 {
+	color: black;
+	background-color: white;
+	padding:0.5em;
+	font-size: 50px;
+	margin-bottom: 2em;
+}

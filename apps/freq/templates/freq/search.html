@@ -1,0 +1,89 @@
+﻿{% extends "freq/base.html" %}
+
+{% block body_content %}
+
+	<form class="form-horizontal" action="{% url "freq:search" %}" method="post">
+		{% csrf_token %}
+		<fieldset>
+			<div class="control-group">
+				<label class="control-label">Lemma:</label>
+				<div class="controls">
+					<input type="text" name="lemma" value="{{ form.lemma }}"/>{% include 'freq/includes/q_popover.html' with text="Enter in downcased form, without diacritics or hyphens. You can give a simple lemma, e.g. ‘knight’, a prefix with wildcard, e.g. ‘kn*’, or a range, e.g. ‘kn_kozz’." %}
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label">Entry headword:</label>
+				<div class="controls">
+					<input type="text" name="headword" value="{{ form.headword }}"/>{% include 'freq/includes/q_popover.html' with text="Restrict results to lemmas in entries with a particular headword." %}
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label">Entry type:</label>
+				<div class="controls">
+					<select name="entrytype">
+						{% for o in form.entrytype_options %}
+							<option value="{{ o.0 }}"{% if o.2 %} selected="selected"{% endif %}>{{ o.1 }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<label class="control-label">Wordclass:</label>
+				<div class="controls">
+					<select name="wordclass">
+						{% for o in form.wordclass_options %}
+							<option value="{{ o.0 }}"{% if o.2 %} selected="selected"{% endif %}>{{ o.1 }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Frequency band:</label>
+				<div class="controls">
+					<select name="frequencyBandMin">
+						{% for o in form.frequency_min_options %}
+							<option value="{{ o.0 }}"{% if o.2 %} selected="selected"{% endif %}>{{ o.1 }}</option>
+						{% endfor %}
+					</select>
+					&nbsp;&nbsp; to &nbsp;&nbsp;<select name="frequencyBandMax">
+						{% for o in form.frequency_max_options %}
+							<option value="{{ o.0 }}"{% if o.2 %} selected="selected"{% endif %}>{{ o.1 }}</option>
+						{% endfor %}
+					</select>{% include 'freq/includes/q_popover.html' with text="Filter to show only results within a given frequency range. E.g. ‘1 to 1’ will only show the very highest-frequency words (> 1000 per million). Frequency bands are logarithmic." %}
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Year:</label>
+				<div class="controls">
+					<input type="text" name="year" value="{{ form.year }}"/>{% include 'freq/includes/q_popover.html' with text="Frequency filters are evaluated relative to this year (defaults to 2000). Results will only include entries current during this year." %}
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Show ghosts for:</label>
+				<div class="controls">
+					date <input type="checkbox" name="includeDateGhosts"{% if form.include_date_ghosts %} checked="checked"{% endif %}/> &nbsp;&nbsp;&nbsp;&nbsp;
+					frequency <input type="checkbox" name="includeFreqGhosts" {% if form.include_freq_ghosts %} checked="checked"{% endif %}/>{% include 'freq/includes/q_popover.html' with text="If ticked, results will will include entries which would otherwise have been omitted (not current in the year specified, or not within the frequency range specified). Entries are shown greyed out." %}
+				</div>
+			</div>
+			<div class="control-group">
+				<label class="control-label">Sort by:</label>
+				<div class="controls">
+					<select name="sortBy">
+						{% for o in form.sort_options %}
+							<option value="{{ o.0 }}"{% if o.2 %} selected="selected"{% endif %}>{{ o.1 }}</option>
+						{% endfor %}
+					</select>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="controls">
+					<button type="submit" class="btn btn-primary">Submit</button>
+				</div>
+			</div>
+		</fieldset>
+	</form>
+{% endblock %}
+

@@ -1,0 +1,17 @@
+﻿{% extends "freq/base.html" %}
+
+{% block body_content %}
+	<ul>
+		<li>OED Frequency wishlist: <a href="{{ STATIC_URL }}freq/docs/OED_Frequency_Wishlist.docx">OED_Frequency_Wishlist.docx</a></li>
+		<li>Proposal: <a href="{{ STATIC_URL }}freq/docs/measuring_frequency_for_oed_lemmas_20121104.docx">measuring_frequency_for_oed_lemmas_20121104.docx</a></li>
+		<li>Prototype report: <a href="{{ STATIC_URL }}freq/docs/oed_frequency_prototype_report.docx">oed_frequency_prototype_report.docx</a></li>
+		</ul>
+	The following spreadsheets are discussed in the prototype report:
+	<ul>
+		<li>Top 5000 high-frequency entries: <a href="{{ STATIC_URL }}freq/docs/high_frequency.xlsx">high_frequency.xlsx</a></li>
+		<li>Entries showing greatest increase or decrease in frequency over time: <a href="{{ STATIC_URL }}freq/docs/delta.xlsx">delta.xlsx</a></li>
+		<li>Entries with highest plural-to-singular ratio: <a href="{{ STATIC_URL }}freq/docs/plural_to_singular.xlsx">plural_to_singular.xlsx</a></li>
+		<li>Entries with highest and lowest frequency-to-size ratios: <a href="{{ STATIC_URL }}freq/docs/frequency_to_size.xlsx">frequency_to_size.xlsx</a></li>
+	</ul>
+{% endblock %}
+

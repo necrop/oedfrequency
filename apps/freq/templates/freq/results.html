@@ -1,0 +1,63 @@
+﻿{% extends "freq/base.html" %}
+
+{% block page_title %}
+search results
+{% endblock %}
+
+{% block body_content %}
+
+	{% if results|length > 1 %}
+		<div id="sorters">
+			Sort results by:
+			{% for s in sorters %}
+				<a href="{{ s.0 }}">{{ s.1 }}</a> |
+			{% endfor %}
+		</div>
+	{% endif %}
+
+	{% include "freq/includes/pagination.html" %}
+	<table class="table table-bordered table-hover">
+		<tbody>
+			{% for r in results %}
+			<tr>
+				<td>{{ forloop.counter0|add:results.start_index }}</td>
+				<td>
+					{% if r.is_date_ghost or r.is_freq_ghost %}
+						<span class="ghost">{{ r.label_tagged|safe }}</span>
+					{% else %}
+						{% include "freq/includes/lemsizespan.html" %}<a href="{% url "freq:entry" id=r.id %}">{{ r.label_tagged|safe }}</a></span>
+						{% if not r.mainentry %} s.v. {{ r.entry.label_tagged|safe }}{% endif %}
+					{% endif %}
+				</td>
+				<td>
+					{% if r.is_date_ghost or r.is_freq_ghost %}
+						<span class="ghost">{{ r.date_range }}</span>
+					{% else %}
+						{{ r.date_range }}
+					{% endif %}
+				</td>
+				<td>
+					{% if r.is_date_ghost or r.is_freq_ghost %}
+					{% else %}
+						<div class="definition">{% if r.definition %}"{{ r.definition }}"{% else %}[undefined]{% endif %}</div>
+						<div>
+							band={{ r.band }} &nbsp;&nbsp;&nbsp;
+							frequency per million={{ r.frequency }} &nbsp;&nbsp;&nbsp;
+						</div>
+						<div>
+							{% include "freq/includes/linkset.html" with lemma=r %}
+						</div>
+					{% endif %}
+				</td>
+			</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+	{% include "freq/includes/pagination.html" %}
+
+	{% if comparators %}
+		<div id="comparators">
+			<a href="{% url 'freq:compare' idlist=comparators %}">Compare frequencies for these results »</a>
+		</div>
+	{% endif %}
+{% endblock %}

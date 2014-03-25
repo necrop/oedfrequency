@@ -1,0 +1,45 @@
+body {
+	padding-top: 60px;
+	padding-bottom: 40px;
+}
+
+.ghost {
+color: gray ;
+font-size: 0.9em ;
+}
+.infoSpan {
+	padding-right: 2em ;
+}
+.stats {
+margin-top: 2em ;
+margin-bottom: 2em ;
+margin-left: 3em ;
+}
+
+#comparators {
+margin-top: 2em ;
+}
+
+#staticText .para {
+	margin-top: 3em ;
+	margin-bottom: 3em ;
+}
+#staticText h3 {
+}
+#staticText p {
+	margin: 1em ;
+	width: 50% ;
+}
+
+
+/* Comparisons */
+.frequencyContainer {
+	margin-top: 2em ;
+}
+#comparators {
+	margin-top: 2em ;
+}
+#comparators ul {
+	margin-left: 3em ;
+}
+

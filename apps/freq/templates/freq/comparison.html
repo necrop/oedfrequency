@@ -1,0 +1,115 @@
+﻿{% extends "freq/base.html" %}
+{% load frequency_extras %}
+
+
+{% block extralinks %}
+	<link href="/static/freq/css/charts.css" rel="stylesheet">
+{% endblock %}
+
+
+{% block body_content %}
+	<div class="well">
+		<p>{{ comparison.label_list_tagged|safe }}</p>
+		<p>Values shown are frequencies per million corpus tokens.</p>
+		<div class="chartWrapper">
+			<div id="frequencyChartContainer"></div>
+			<div id="keyContainer"></div>
+			<div id="datapointDetails" class="popup">
+				<h3></h3>
+				<div></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="well">
+		<h4>Ratio of frequencies of '{{ comparison.top2_entries.0.label_tagged|safe }}' to '{{ comparison.top2_entries.1.label_tagged|safe }}'</h4>
+		<div class="chartWrapper">
+			<div id="ratioChartContainer"></div>
+			<div id="ratioDetails" class="popup">
+				<h3></h3>
+				<div>f({{ comparison.top2_entries.0.label_tagged|safe }}) / f({{ comparison.top2_entries.1.label_tagged|safe }}) = <span></span></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="well">
+		<h3>Lemmas compared</h3>
+		<table class="table table-bordered table-hover">
+			<tbody>
+				{% for e in comparison.entries %}
+				<tr>
+					<td>
+						<a href="{% url 'freq:entry' id=e.id %}">{{ e.label_tagged|safe }}</a>
+						{% if not e.mainentry %} s.v. {{ e.entry.label_tagged|safe }}{% endif %}
+					</td>
+					<td>
+						{% include "freq/includes/linkset.html" with lemma=e %}
+						<br/>{% if e.definition %}"{{ e.definition }}"{% else %}[undefined]{% endif %} ({{ e.date_range }})
+					</td>
+					<td>
+						{% if e.remove %}
+							<a class="btn btn-small btn-primary" href="{% url 'freq:compare' idlist=e.remove %}" title="Remove this series from the chart"><i class="icon-remove icon-white"></i> remove</a>
+						{% endif %}
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+		<p>
+			Compare in <a href="{{ comparison.ngram_query }}" target="ext">Ngram viewer&nbsp;<i class="icon-share-alt"></i></a>
+		</p>
+	</div>
+
+	{% if adders %}
+		<div class="well">
+			<h3>Add series for:</h3>
+			<ul>
+				{% for e in adders %}
+					<li><a href="{% url 'freq:compare' idlist=comparison.idlist %}+{{ e.0 }}">{{ e.1|safe }}</a></li>
+				{% endfor %}
+			</ul>
+		</div>
+	{% endif %}
+
+
+	<div id="dataTable" class="well">
+		<h3>Frequency tables</h3>
+		<p>All values are raw frequencies, expressed as frequency per million corpus tokens.</p>
+
+		<table class="table table-bordered table-striped">
+			<thead>
+				<tr>
+					<th>Period</th>
+					{% for e in comparison.entries %}
+						<th>{{ e.label }}</th>
+					{% endfor %}
+				</tr>
+			</thead>
+			<tbody>
+				{% for row in comparison.grand_table %}
+					<tr>
+						<td>{{ row.0 }}</td>
+						{% for value in row.1 %}
+							<td>{{ value }}</td>
+						{% endfor %}
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+
+	</div>
+{% endblock %}
+
+
+{% block javascript_constants %}
+	var compareseries = JSON.parse('{{ comparison.tojson|safe }}');
+	var ratioseries = JSON.parse('{{ comparison.ratio_json|safe }}');
+{% endblock %}
+
+
+{% block extrascript %}
+	<script type="text/javascript" src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+	<script type="text/javascript" src="/static/freq/js/chartism.js"></script>
+	<script type="text/javascript" src="/static/freq/js/comparecharts.js"></script>
+{% endblock %}

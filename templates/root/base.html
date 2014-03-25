@@ -1,0 +1,31 @@
+{% load staticfiles %}
+
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>{% block pagetitle %}{% endblock %} | OED frequency</title>
+		<link href="{% static 'common/bootstrap/css/bootstrap.css' %}" rel="stylesheet">
+		<link href="{% static 'root/css/root.css' %}" rel="stylesheet">
+		{% block extralinks %}
+		{% endblock %}
+		<!--[if lt IE 9]>
+			<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<img class="bg" src="{% static 'root/assets/oed_mag.jpg' %}">
+
+		<div id="contentContainer">
+			<h1>OED frequency</h1>
+			{% block page_content %}
+			{% endblock %}
+		</div>
+
+		<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+		<script src="{% static 'common/bootstrap/js/bootstrap.min.js' %}"></script>
+
+		{% block additional_scripts %}
+		{% endblock %}
+	</body>
+</html>
