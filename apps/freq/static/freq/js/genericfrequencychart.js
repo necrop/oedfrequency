@@ -1,9 +1,7 @@
 /*global $, d3 */
 'use strict';
 
-var chart_container,
-	d3_chart_container,
-	canvas,
+var canvas,
 	x_scale,
 	y_scale,
 	key_container,
@@ -19,13 +17,17 @@ var palette = ['#0099CC', '#00FF00', '#AA0078', '#FF6600',
 	'#663300', '#177F75', '#2C6700'];
 
 
-function initializeChart(series_list, chart_type) {
-	chart_container = $('#frequencyChartContainer');
-	d3_chart_container = d3.select('#frequencyChartContainer');
+function drawGenericChart(series_list, chart_type) {
+
 	datapoint_details = $('#datapointDetails');
 	key_container = $('#keyContainer');
 	raw_smoothed_toggle = $('#toggleValues');
-	drawChartBackground(series_list);
+	var max_frequency = findHighestValue(series_list);
+	var response = drawChartBackground('#frequencyChartContainer', 0.5, max_frequency);
+	canvas = response[0];
+	x_scale = response[1];
+	y_scale = response[2];
+
 	for (var i = 0; i < series_list.length; i += 1) {
 		plotSeries(series_list[i]);
 	}
@@ -34,59 +36,6 @@ function initializeChart(series_list, chart_type) {
 		setToggleListener();
 	}
 }
-
-
-function drawChartBackground(series_list) {
-	var max_frequency = findHighestValue(series_list);
-	var canvas_width = chart_container.innerWidth();
-	var canvas_height = canvas_width * 0.5;
-	var y_padding = canvas_height * 0.1;
-	var x_padding = canvas_width * 0.05;
-
-	// x-axis scale
-	x_scale = d3.scale.linear()
-		.domain([1750, 2010])
-		.range([x_padding, canvas_width]);
-
-	// y-axis scale
-	y_scale = d3.scale.linear()
-		.domain([0, max_frequency * 1.2])
-		.range([canvas_height - y_padding, 0]);
-
-	// Create the SVG element (as a child of the #frequencyChartContainer div)
-	canvas = d3_chart_container.append('svg')
-		.attr('width', canvas_width)
-		.attr('height', canvas_height)
-		.attr('overflow', 'hidden');
-
-	// Add a white rectangle the same size as the SVG element, for the background
-	canvas.append('rect')
-		.attr('x', 0)
-		.attr('y', 0)
-		.attr('width', canvas_width)
-		.attr('height', canvas_height)
-		.attr('class', 'chartBackground');
-
-	// Draw axes
-	var format_as_year = d3.format('d');
-	var x_axis = d3.svg.axis()
-		.scale(x_scale)
-		.orient('bottom');
-	x_axis.tickFormat(format_as_year);
-	canvas.append('g')
-		.attr('class', 'frequencyAxis')
-		.attr('transform', 'translate(0,' + (canvas_height - y_padding) + ')')
-		.call(x_axis);
-
-	var y_axis = d3.svg.axis()
-		.scale(y_scale)
-		.orient('left');
-	canvas.append('g')
-		.attr('class', 'frequencyAxis')
-		.attr('transform', 'translate(' + x_padding + ', 0)')
-		.call(y_axis);
-}
-
 
 function plotSeries(series) {
 

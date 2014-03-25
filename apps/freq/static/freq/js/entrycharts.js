@@ -43,7 +43,7 @@ function drawFrequencyChart() {
 		series: main_series
 	}
 	series_list.push(main);
-	initializeChart(series_list, 'lemma');
+	drawGenericChart(series_list, 'lemma');
 }
 
 

@@ -116,6 +116,12 @@
 }
 
 .ratioPath {
+	stroke: black;
+	stroke-width: 1;
+	fill: none;
+}
+
+.unityPath {
 	stroke: gray;
 	stroke-width: 1;
 	fill: none;

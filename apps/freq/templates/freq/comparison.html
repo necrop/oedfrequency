@@ -27,7 +27,7 @@
 			<div id="ratioChartContainer"></div>
 			<div id="ratioDetails" class="popup">
 				<h3></h3>
-				<div>f({{ comparison.top2_entries.0.label_tagged|safe }}) / f({{ comparison.top2_entries.1.label_tagged|safe }}) = <span></span></div>
+				<div>{{ comparison.top2_entries.0.label_tagged|safe }} / {{ comparison.top2_entries.1.label_tagged|safe }} = <span></span></div>
 			</div>
 		</div>
 	</div>
@@ -110,6 +110,7 @@
 
 {% block extrascript %}
 	<script type="text/javascript" src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-	<script type="text/javascript" src="/static/freq/js/chartism.js"></script>
+	<script type="text/javascript" src="/static/freq/js/chartbackground.js"></script>
+	<script type="text/javascript" src="/static/freq/js/genericfrequencychart.js"></script>
 	<script type="text/javascript" src="/static/freq/js/comparecharts.js"></script>
 {% endblock %}
