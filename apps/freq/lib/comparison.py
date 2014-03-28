@@ -20,6 +20,8 @@ class Comparison(object):
                     ids.append(id)
 
             self._entries = [Lemma.objects.get(id=id) for id in ids]
+            # Sort by modern frequency
+            self._entries.sort(key=lambda e: e.fmodern, reverse=True)
 
             # Add e.remove attribute, which is a list of all IDs *except* for
             #  this entry - this provides the hook for removing the current
@@ -33,13 +35,7 @@ class Comparison(object):
             return self._entries
 
     def top2_entries(self):
-        try:
-            return self._top2_entries
-        except AttributeError:
-            tops = self.entries()[:]
-            tops.sort(key=lambda e: e.fmodern, reverse=True)
-            self._top2_entries = tops[0:2]
-            return self._top2_entries
+        return self.entries()[0:2]
 
     def label_list(self):
         return ', '.join(["'%s'" % (e.label,) for e in self.entries()])
